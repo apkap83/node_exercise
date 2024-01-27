@@ -1,0 +1,5 @@
+@hostname = http://127.0.0.1
+
+###
+# Login Request
+POST {{hostname}}:4000/feedDB
