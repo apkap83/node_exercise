@@ -1,5 +1,15 @@
 @hostname = http://127.0.0.1
 
 ###
-# Login Request
+# Load Data from Excel
 POST {{hostname}}:4000/feedDB
+
+###
+# Get Users Based on Parameters
+GET {{hostname}}:4000/users?firstName=George
+
+
+###
+# Receives the user-ids of two users and retrieves all of the messages that they have exchanged,
+// ordered by the most recent sent.
+GET {{hostname}}:4000/messages?user1Id=10&user2Id=7
