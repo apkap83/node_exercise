@@ -1,16 +1,16 @@
 version: "3.8"
 services:
-  # api:
-  #   container_name: node_assignment
-  #   restart: always
-  #   build: .
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - postgres_db
-  #   volumes:
-  #   - .:/usr/src/app
-  #   - /usr/src/app/node_modules
+  api:
+    container_name: node_assignment
+    restart: always
+    build: .
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres_db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
 
   postgres_db:
     container_name: postgres_db

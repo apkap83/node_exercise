@@ -9,6 +9,7 @@ import morgan from "morgan";
 import { myRouter } from "./routes/myRoutes";
 import bodyParser from "body-parser";
 
+// I created GraphQL Routes also - check GraphQL_Notes.txt
 import "./routes/myGraphQLRoutes";
 
 export const app = express();

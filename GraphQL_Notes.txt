@@ -1,3 +1,5 @@
+Use the below 2 Queries and 1 mutation to check graphQL route
+
 query {
     users {
         id

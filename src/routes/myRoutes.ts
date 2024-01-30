@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { Op } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
 
 import { sequelizeDB } from "../services/dbService/initDBAndModels";
 import { User, Message } from "../services/dbService/initDBAndModels";
@@ -24,7 +24,8 @@ myRouter.post("/feedDB", async (req: Request, res: Response) => {
       .send({ message: "Users and Messages Loaded in DB!" });
   } catch (error) {
     logger.error(error);
-    return res.status(500).send("Error during load of excel to DB");
+    console.error(error);
+    return res.status(500).send(error);
   }
 });
 
@@ -79,12 +80,10 @@ myRouter.get("/messages", async (req: Request, res: Response) => {
     // Type casting and sanitizing inputs
     const user1Id = parseInt(req.query.user1Id as string);
     const user2Id = parseInt(req.query.user2Id as string);
-
-    // Validate the parsed integers
+    // // Validate the parsed integers
     if (isNaN(user1Id) || isNaN(user2Id)) {
       return res.status(400).json({ error: "Invalid user IDs" });
     }
-
     const messages = await Message.findAll({
       where: {
         [Op.or]: [
@@ -94,9 +93,8 @@ myRouter.get("/messages", async (req: Request, res: Response) => {
       },
       order: [["timestampSent", "DESC"]],
     });
-
-    logger.info("Fetching Messages with parameters");
-    res.json(messages);
+    logger.info("Fetching Messages for user IDs: " + user1Id + " - " + user2Id);
+    return res.json(messages);
   } catch (error) {
     logger.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -141,7 +139,8 @@ myRouter.get("/user/:userId/messages", async (req, res) => {
             FROM 
                 Messages
             WHERE 
-                "sender" = :userId OR "receiver" = :userId
+                "sender" = :userId   OR
+                "receiver" = :userId
             GROUP BY 
                 LEAST("sender", "receiver"), 
                 GREATEST("sender", "receiver")
@@ -155,11 +154,11 @@ myRouter.get("/user/:userId/messages", async (req, res) => {
     `;
 
     const results = await sequelizeDB.query(query, {
-      replacements: { userId: userId },
-      type: sequelizeDB.QueryTypes.SELECT,
+      replacements: { userId },
+      type: QueryTypes.SELECT,
     });
 
-    logger.info("Fetching Messages for user id: " + userId);
+    logger.info("Fetching all messages for user id: " + userId);
     res.json(results);
   } catch (error: any) {
     logger.error(error);

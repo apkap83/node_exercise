@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/routes/myRoutes.ts</title>
+    <title>Code coverage report for routes/myRoutes.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/routes</a> myRoutes.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">routes</a> myRoutes.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.03% </span>
+                <span class="strong">82.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>47/58</span>
+                <span class='fraction'>47/57</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80.7% </span>
+                <span class="strong">82.14% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>46/57</span>
+                <span class='fraction'>46/56</span>
             </div>
         
             
@@ -230,7 +230,8 @@
 <a name='L165'></a><a href='#L165'>165</a>
 <a name='L166'></a><a href='#L166'>166</a>
 <a name='L167'></a><a href='#L167'>167</a>
-<a name='L168'></a><a href='#L168'>168</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -257,7 +258,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -313,10 +313,13 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -356,7 +359,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -423,8 +425,7 @@ myRouter.post("/feedDB", async (req: Request, res: Response) =&gt; {
       .send({ message: "Users and Messages Loaded in DB!" });
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    logger.error(error);</span>
-<span class="cstat-no" title="statement not covered" >    console.error(error);</span>
-<span class="cstat-no" title="statement not covered" >    return res.status(500).send(error);</span>
+<span class="cstat-no" title="statement not covered" >    return res.status(500).send("Error during load of excel to DB");</span>
   }
 });
 &nbsp;
@@ -479,10 +480,12 @@ myRouter.get("/messages", async (req: Request, res: Response) =&gt; {
     // Type casting and sanitizing inputs
     const user1Id = parseInt(req.query.user1Id as string);
     const user2Id = parseInt(req.query.user2Id as string);
-    // // Validate the parsed integers
+&nbsp;
+    // Validate the parsed integers
     if (isNaN(user1Id) || isNaN(user2Id)) {
       return res.status(400).json({ error: "Invalid user IDs" });
     }
+&nbsp;
     const messages = await Message.findAll({
       where: {
         [Op.or]: [
@@ -492,8 +495,9 @@ myRouter.get("/messages", async (req: Request, res: Response) =&gt; {
       },
       order: [["timestampSent", "DESC"]],
     });
-    logger.info("Fetching Messages for user IDs: " + user1Id + " - " + user2Id);
-    return res.json(messages);
+&nbsp;
+    logger.info("Fetching Messages with parameters");
+    res.json(messages);
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    logger.error(error);</span>
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: "Internal Server Error" });</span>
@@ -538,8 +542,7 @@ myRouter.get("/user/:userId/messages", async (req, res) =&gt; {
             FROM 
                 Messages
             WHERE 
-                "sender" = :userId   OR
-                "receiver" = :userId
+                "sender" = :userId OR "receiver" = :userId
             GROUP BY 
                 LEAST("sender", "receiver"), 
                 GREATEST("sender", "receiver")
@@ -553,11 +556,11 @@ myRouter.get("/user/:userId/messages", async (req, res) =&gt; {
     `;
 &nbsp;
     const results = await sequelizeDB.query(query, {
-      replacements: { userId },
+      replacements: { userId: userId },
       type: QueryTypes.SELECT,
     });
 &nbsp;
-    logger.info("Fetching all messages for user id: " + userId);
+    logger.info("Fetching Messages for user id: " + userId);
     res.json(results);
   } catch (error: any) {
 <span class="cstat-no" title="statement not covered" >    logger.error(error);</span>
@@ -571,16 +574,16 @@ myRouter.get("/user/:userId/messages", async (req, res) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-30T14:34:33.050Z
+                at 2024-01-30T12:12:04.359Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
     </body>
 </html>
     

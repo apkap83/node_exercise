@@ -5,8 +5,8 @@
     "SequelizeSuppressLoggingToConsole": true
   },
   "DB": {
-    "HOST": "127.0.0.1",
-    "PORT": 5433,
+    "HOST": "postgres_db",
+    "PORT": 5432,
     "USER": "pccw_user",
     "PASSWORD": "pccw_password",
     "NAME": "pccw_db",

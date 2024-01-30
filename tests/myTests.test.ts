@@ -1,7 +1,7 @@
 import request from "supertest";
 import { sequelizeDB } from "../src/services/dbService/dbConnect";
 import { User, Message } from "../src/services/dbService/initDBAndModels";
-
+import config from "config";
 import { app } from "../src/App";
 
 const prefixURL = "/api";

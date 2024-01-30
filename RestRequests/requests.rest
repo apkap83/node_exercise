@@ -1,25 +1,24 @@
-@hostname = http://127.0.0.1
+@hostname = http://127.0.0.1:4005
 
 ###
 # Load Data from Excel
-POST {{hostname}}:4000/api/feedDB
+POST {{hostname}}/api/feedDB
 
 ###
 # Get All Users
-GET {{hostname}}:4000/api/users
+GET {{hostname}}/api/users
 
 ###
 # Get Users Based on Parameters
-GET {{hostname}}:4000/api/users?firstName=George&surname=SurnameA&userName=username1
+GET {{hostname}}/api/users?firstName=George&surname=SurnameA&userName=username1
 
 ###
 # Receives the user-ids of two users and retrieves all of the messages that they have exchanged,
 // ordered by the most recent sent.
-GET {{hostname}}:4000/api/messages?user1Id=10&user2Id=7
-
+GET {{hostname}}/api/messages?user1Id=4&user2Id=7
 
 ###
 # Receives a user-id and then retrieves a list of users, sorted by the most 
 # recent message that has been exchanged between the user requested and the 
 # rest of the users (just like your social-media applications).
-GET {{hostname}}:4000/api/user/10/messages
+GET {{hostname}}/api/user/10/messages

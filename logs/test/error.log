@@ -1,0 +1,27 @@
+2024-01-30T13:07:44.832Z [[31merror[39m]: Cannot access 'userId' before initialization
+2024-01-30T14:09:29.230Z [[31merror[39m]: Validation error
+2024-01-30T14:10:40.730Z [[31merror[39m]: Validation error
+2024-01-30T14:11:54.487Z [[31merror[39m]: Validation error
+2024-01-30T14:14:07.676Z [[31merror[39m]: Validation error
+2024-01-30T14:14:29.699Z [[31merror[39m]: Validation error
+2024-01-30T14:14:36.346Z [[31merror[39m]: Validation error
+2024-01-30T14:15:18.353Z [[31merror[39m]: Validation error
+2024-01-30T14:16:06.966Z [[31merror[39m]: Validation error
+2024-01-30T14:16:24.704Z [[31merror[39m]: Validation error
+2024-01-30T14:16:34.955Z [[31merror[39m]: Validation error
+2024-01-30T14:16:41.864Z [[31merror[39m]: Validation error
+2024-01-30T14:16:46.622Z [[31merror[39m]: Validation error
+2024-01-30T14:16:50.756Z [[31merror[39m]: Validation error
+2024-01-30T14:17:59.059Z [[31merror[39m]: Validation error
+2024-01-30T14:17:59.078Z [[31merror[39m]: Validation error
+2024-01-30T14:19:30.578Z [[31merror[39m]: Validation error
+2024-01-30T14:19:51.524Z [[31merror[39m]: Validation error
+2024-01-30T14:19:51.543Z [[31merror[39m]: Validation error
+2024-01-30T14:21:33.913Z [[31merror[39m]: Validation error
+2024-01-30T14:21:33.913Z [[31merror[39m]: Validation error
+2024-01-30T14:26:36.971Z [[31merror[39m]: Validation error
+2024-01-30T14:26:36.971Z [[31merror[39m]: Validation error
+2024-01-30T14:27:27.434Z [[31merror[39m]: (0 , _initDBAndModels.dropAndCreateMessagesTable) is not a function
+2024-01-30T14:27:27.434Z [[31merror[39m]: (0 , _initDBAndModels.dropAndCreateMessagesTable) is not a function
+2024-01-30T14:33:03.521Z [[31merror[39m]: (0 , _initDBAndModels.dropAndCreateMessagesTable) is not a function
+2024-01-30T14:33:03.521Z [[31merror[39m]: (0 , _initDBAndModels.dropAndCreateMessagesTable) is not a function

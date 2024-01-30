@@ -1,8 +1,10 @@
 import http from "http";
 import { app } from "./App";
+import logger from "../config/winston-config";
+import config from "config";
 
-const port = 4000;
+const port = config.get("Backend.PORT");
 const server = http.createServer(app);
 server.listen(port, () => {
-  console.log(`Listening on port: ${port}`);
+  logger.info(`Backend is Listening on Port: ${port}`);
 });

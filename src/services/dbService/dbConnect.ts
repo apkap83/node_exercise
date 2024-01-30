@@ -1,5 +1,5 @@
-const { Sequelize } = require("sequelize");
-const config = require("config");
+import { Sequelize } from "sequelize";
+import config from "config";
 import loggerDB from "../../../config/winston-config-for-sequelize";
 
 // Custom logging function
@@ -13,7 +13,7 @@ export const sequelizeDB = new Sequelize(
   config.get("DB.PASSWORD"),
   {
     host: config.get("DB.HOST"),
-    port: 5433,
+    port: config.get("DB.PORT"),
     dialect: "postgres",
     dialectOptions: {
       charset: "utf8",

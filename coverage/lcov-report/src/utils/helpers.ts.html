@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">91.83% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>43/43</span>
+                <span class='fraction'>45/49</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">91.48% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>41/41</span>
+                <span class='fraction'>43/47</span>
             </div>
         
             
@@ -167,7 +167,21 @@
 <a name='L102'></a><a href='#L102'>102</a>
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -202,11 +216,14 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -234,15 +251,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,13 +295,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import xlsx from "node-xlsx";
 import fs from "fs";
 import path from "path";
 import logger from "../../config/winston-config";
 import {
-  emptyUsersTable,
-  emptyMessagesTable,
+  dropAndCreateUsersTable,
+  dropAndCreateMessagesTable,
 } from "../services/dbService/initDBAndModels";
 import { addUserInDB, AddUserInDBArgs } from "../services/userService/user";
 import {
@@ -304,75 +332,89 @@ function excelDateToJSDate(serial: number) {
 }
 &nbsp;
 export const loadUsersFromExcel = async () =&gt; {
-  logger.info("Truncating Existing Users...");
-  emptyUsersTable();
+  try {
+    logger.info("Truncating Existing Users...");
+    await dropAndCreateUsersTable();
 &nbsp;
-  logger.info("Loading Users to DB...");
-  const usersSheetName = "users";
+    logger.info("Loading Users to DB...");
+    const usersSheetName = "users";
 &nbsp;
-  const fileBuffer = fs.readFileSync(path.join(__dirname, "../../seeds.xlsx"));
-  const workSheetsFromFile = xlsx.parse(fileBuffer);
+    const fileBuffer = fs.readFileSync(
+      path.join(__dirname, "../../seeds.xlsx")
+    );
+    const workSheetsFromFile = xlsx.parse(fileBuffer);
 &nbsp;
-  // For Every sheet in excel file...
-  for (const sheet of workSheetsFromFile) {
-    // If it's the users' sheet...
-    if (sheet.name === usersSheetName) {
-      if (sheet.data &amp;&amp; sheet.data.length &gt; 0) {
-        sheet.data.map((rowData: any[]) =&gt; {
-          if (rowData.length &gt;= 4) {
-            const [id, firstName, surname, dateOfBirth, gender, userName] =
-              rowData;
+    // For Every sheet in excel file...
+    for (const sheet of workSheetsFromFile) {
+      // If it's the users' sheet...
+      if (sheet.name === usersSheetName) {
+        if (sheet.data &amp;&amp; sheet.data.length &gt; 0) {
+          sheet.data.map((rowData: any[]) =&gt; {
+            if (rowData.length &gt;= 4) {
+              const [id, firstName, surname, dateOfBirth, gender, userName] =
+                rowData;
 &nbsp;
-            const user: UserSheetData = {
-              firstName,
-              surname,
-              dateOfBirth: excelDateToJSDate(dateOfBirth),
-              gender,
-              userName,
-            };
+              const user: UserSheetData = {
+                firstName,
+                surname,
+                dateOfBirth: excelDateToJSDate(dateOfBirth),
+                gender,
+                userName,
+              };
 &nbsp;
-            addUserInDB(user);
-          }
-        });
+              addUserInDB(user);
+            }
+          });
+        }
       }
     }
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    logger.error(error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
   }
 };
 &nbsp;
 export const loadMessagesFromExcel = async () =&gt; {
-  logger.info("Truncating Existing Messages...");
-  emptyMessagesTable();
+  try {
+    logger.info("Truncating Existing Messages...");
+    await dropAndCreateMessagesTable();
 &nbsp;
-  logger.info("Loading Messages to DB...");
-  const messagesSheetName = "messages";
+    logger.info("Loading Messages to DB...");
+    const messagesSheetName = "messages";
 &nbsp;
-  const fileBuffer = fs.readFileSync(path.join(__dirname, "../../seeds.xlsx"));
-  const workSheetsFromFile = xlsx.parse(fileBuffer);
+    const fileBuffer = fs.readFileSync(
+      path.join(__dirname, "../../seeds.xlsx")
+    );
+    const workSheetsFromFile = xlsx.parse(fileBuffer);
 &nbsp;
-  // For Every sheet in excel file...
-  for (const sheet of workSheetsFromFile) {
-    // If it's the messages' sheet...
-    if (sheet.name === messagesSheetName) {
-      if (sheet.data &amp;&amp; sheet.data.length &gt; 0) {
-        sheet.data.map((rowData: any[]) =&gt; {
-          if (rowData.length &gt;= 3) {
-            const [id, content, sender, receiver, seen, timestampSent] =
-              rowData;
+    // For Every sheet in excel file...
+    for (const sheet of workSheetsFromFile) {
+      // If it's the messages' sheet...
+      if (sheet.name === messagesSheetName) {
+        if (sheet.data &amp;&amp; sheet.data.length &gt; 0) {
+          sheet.data.map((rowData: any[]) =&gt; {
+            if (rowData.length &gt;= 3) {
+              const [id, content, sender, receiver, seen, timestampSent] =
+                rowData;
 &nbsp;
-            const message: AddMessageInDBArgs = {
-              id,
-              content,
-              sender,
-              receiver,
-              seen,
-              timestampSent: excelDateToJSDate(timestampSent),
-            };
+              const message: AddMessageInDBArgs = {
+                id,
+                content,
+                sender,
+                receiver,
+                seen,
+                timestampSent: excelDateToJSDate(timestampSent),
+              };
 &nbsp;
-            addMessageInDB(message);
-          }
-        });
+              addMessageInDB(message);
+            }
+          });
+        }
       }
     }
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    logger.error(error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
   }
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -382,7 +424,7 @@ export const loadMessagesFromExcel = async () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-30T11:33:07.324Z
+                at 2024-01-30T14:34:33.050Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

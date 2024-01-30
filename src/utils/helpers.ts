@@ -3,8 +3,8 @@ import fs from "fs";
 import path from "path";
 import logger from "../../config/winston-config";
 import {
-  emptyUsersTable,
-  emptyMessagesTable,
+  dropAndCreateUsersTable,
+  dropAndCreateMessagesTable,
 } from "../services/dbService/initDBAndModels";
 import { addUserInDB, AddUserInDBArgs } from "../services/userService/user";
 import {
@@ -31,74 +31,88 @@ function excelDateToJSDate(serial: number) {
 }
 
 export const loadUsersFromExcel = async () => {
-  logger.info("Truncating Existing Users...");
-  emptyUsersTable();
+  try {
+    logger.info("Truncating Existing Users...");
+    await dropAndCreateUsersTable();
 
-  logger.info("Loading Users to DB...");
-  const usersSheetName = "users";
+    logger.info("Loading Users to DB...");
+    const usersSheetName = "users";
 
-  const fileBuffer = fs.readFileSync(path.join(__dirname, "../../seeds.xlsx"));
-  const workSheetsFromFile = xlsx.parse(fileBuffer);
+    const fileBuffer = fs.readFileSync(
+      path.join(__dirname, "../../seeds.xlsx")
+    );
+    const workSheetsFromFile = xlsx.parse(fileBuffer);
 
-  // For Every sheet in excel file...
-  for (const sheet of workSheetsFromFile) {
-    // If it's the users' sheet...
-    if (sheet.name === usersSheetName) {
-      if (sheet.data && sheet.data.length > 0) {
-        sheet.data.map((rowData: any[]) => {
-          if (rowData.length >= 4) {
-            const [id, firstName, surname, dateOfBirth, gender, userName] =
-              rowData;
+    // For Every sheet in excel file...
+    for (const sheet of workSheetsFromFile) {
+      // If it's the users' sheet...
+      if (sheet.name === usersSheetName) {
+        if (sheet.data && sheet.data.length > 0) {
+          sheet.data.map((rowData: any[]) => {
+            if (rowData.length >= 4) {
+              const [id, firstName, surname, dateOfBirth, gender, userName] =
+                rowData;
 
-            const user: UserSheetData = {
-              firstName,
-              surname,
-              dateOfBirth: excelDateToJSDate(dateOfBirth),
-              gender,
-              userName,
-            };
+              const user: UserSheetData = {
+                firstName,
+                surname,
+                dateOfBirth: excelDateToJSDate(dateOfBirth),
+                gender,
+                userName,
+              };
 
-            addUserInDB(user);
-          }
-        });
+              addUserInDB(user);
+            }
+          });
+        }
       }
     }
+  } catch (error) {
+    logger.error(error);
+    throw error;
   }
 };
 
 export const loadMessagesFromExcel = async () => {
-  logger.info("Truncating Existing Messages...");
-  emptyMessagesTable();
+  try {
+    logger.info("Truncating Existing Messages...");
+    await dropAndCreateMessagesTable();
 
-  logger.info("Loading Messages to DB...");
-  const messagesSheetName = "messages";
+    logger.info("Loading Messages to DB...");
+    const messagesSheetName = "messages";
 
-  const fileBuffer = fs.readFileSync(path.join(__dirname, "../../seeds.xlsx"));
-  const workSheetsFromFile = xlsx.parse(fileBuffer);
+    const fileBuffer = fs.readFileSync(
+      path.join(__dirname, "../../seeds.xlsx")
+    );
+    const workSheetsFromFile = xlsx.parse(fileBuffer);
 
-  // For Every sheet in excel file...
-  for (const sheet of workSheetsFromFile) {
-    // If it's the messages' sheet...
-    if (sheet.name === messagesSheetName) {
-      if (sheet.data && sheet.data.length > 0) {
-        sheet.data.map((rowData: any[]) => {
-          if (rowData.length >= 3) {
-            const [id, content, sender, receiver, seen, timestampSent] =
-              rowData;
+    // For Every sheet in excel file...
+    for (const sheet of workSheetsFromFile) {
+      // If it's the messages' sheet...
+      if (sheet.name === messagesSheetName) {
+        if (sheet.data && sheet.data.length > 0) {
+          sheet.data.map((rowData: any[]) => {
+            if (rowData.length >= 3) {
+              const [id, content, sender, receiver, seen, timestampSent] =
+                rowData;
 
-            const message: AddMessageInDBArgs = {
-              id,
-              content,
-              sender,
-              receiver,
-              seen,
-              timestampSent: excelDateToJSDate(timestampSent),
-            };
+              const message: AddMessageInDBArgs = {
+                id,
+                content,
+                sender,
+                receiver,
+                seen,
+                timestampSent: excelDateToJSDate(timestampSent),
+              };
 
-            addMessageInDB(message);
-          }
-        });
+              addMessageInDB(message);
+            }
+          });
+        }
       }
     }
+  } catch (error) {
+    logger.error(error);
+    throw error;
   }
 };

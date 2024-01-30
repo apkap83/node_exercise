@@ -25,10 +25,7 @@ const logger = winston.createLogger({
   ],
 });
 
-if (
-  process.env.NODE_ENV !== "production" &&
-  !config.get("Logging.SuppressLoggingToConsole")
-) {
+if (!config.get("Logging.SuppressLoggingToConsole")) {
   logger.add(
     new winston.transports.Console({
       format: winston.format.combine(

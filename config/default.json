@@ -1,14 +1,1 @@
-{
-  "Logging": {
-    "WinstonLoggingLevel": "info",
-    "SuppressLoggingToConsole": false,
-    "SequelizeSuppressLoggingToConsole": true
-  },
-  "DB": {
-    "HOST": "127.0.0.1",
-    "USER": "pccw_user",
-    "PASSWORD": "pccw_password",
-    "NAME": "pccw_db",
-    "ConnectionLimit": "3"
-  }
-}
+{}

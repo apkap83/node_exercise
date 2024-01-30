@@ -16,14 +16,18 @@ async function assertDBConnectionOK() {
   }
 }
 
-export async function emptyUsersTable() {
-  await User.truncate();
+export async function dropAndCreateUsersTable() {
+  await User.drop();
+  await User.sync();
 }
 
-export async function emptyMessagesTable() {
-  await Message.truncate();
+export async function dropAndCreateMessagesTable() {
+  await Message.drop();
+  await Message.sync();
 }
 
-assertDBConnectionOK();
+if (!sequelizeDB) {
+  assertDBConnectionOK();
+}
 
 export { sequelizeDB, User, Message };
