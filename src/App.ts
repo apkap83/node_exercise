@@ -1,5 +1,6 @@
 // Imports
 import express, { Request, Response, NextFunction, Errback } from "express";
+import { myGraphQlRoute } from "./routes/myGraphQLRoutes";
 
 // Initialize Postgres Connection and Models
 import "./services/dbService/initDBAndModels";
@@ -8,11 +9,17 @@ import morgan from "morgan";
 import { myRouter } from "./routes/myRoutes";
 import bodyParser from "body-parser";
 
+import "./routes/myGraphQLRoutes";
+
 export const app = express();
+
+interface CustomError extends Error {
+  status?: number;
+}
 
 app.use(
   morgan("dev", {
-    skip: function (req, res) {
+    skip: function (req: Request, res: Response) {
       return res.statusCode > 400;
     },
   })
@@ -21,7 +28,7 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   // Set response headers
   res.header("Access-Control-Allow-Origin", "*"); // Allow access to any (*) site
   res.header(
@@ -37,13 +44,10 @@ app.use((req, res, next) => {
   next(); // Go to next middleware
 });
 
-app.use("/", myRouter);
+app.use("/api", myRouter);
+app.use("/graphql", myGraphQlRoute());
 
-interface CustomError extends Error {
-  status?: number;
-}
-
-app.use((req: Request, res: Response, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   const error: CustomError = new Error("No route was found for this request!");
   error.status = 404;
   next(error);

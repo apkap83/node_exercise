@@ -28,3 +28,27 @@ export const addUserInDB = async ({
     throw error;
   }
 };
+
+export const getAllUsersFromDB = async () => {
+  try {
+    const allUsers = await User.findAll({ order: [["userName", "ASC"]] });
+
+    return allUsers;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserById = async ({ id }: { id: string }) => {
+  try {
+    const user = await User.findByPk(id);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -1,0 +1,30 @@
+query {
+    users {
+        id
+        firstName
+        surname
+        dateOfBirth
+    }
+}
+
+query {
+    user(id: 5){
+        id
+        firstName
+        surname
+        dateOfBirth
+    }
+}
+
+mutation {
+    addUser(
+        firstName: "My First Name",
+        surname:"My Surname",
+        dateOfBirth:"1983-08-18T06:00:00.000Z",
+        gender:"Male",
+        userName:"apkap83") {
+        firstName,
+        surname,
+        userName
+    }
+}

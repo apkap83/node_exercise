@@ -10,8 +10,10 @@ COPY package*.json ./
 
 RUN npm install
 
-# Install nodemon globally
+# Install the below packages globally
 RUN npm install -g nodemon
+RUN npm install -g ts-node
+RUN npm install -g typescript
 
 # Bundle app source
 COPY . .

@@ -17,6 +17,16 @@ interface UserSheetData {
   userName: string;
 }
 
+function excelDateToJSDate(serial: number) {
+  const excelEpoch = new Date(1899, 11, 31);
+  const dayAdjustment = serial >= 61 ? -1 : 0;
+
+  // Calculate the total number of milliseconds: days + fractional day for time
+  const totalMilliseconds = (serial + dayAdjustment) * 86400000;
+
+  return new Date(excelEpoch.getTime() + totalMilliseconds);
+}
+
 export const loadUsersFromExcel = async () => {
   console.log("Loading Users to DB...");
   const usersSheetName = "users";
@@ -40,13 +50,10 @@ export const loadUsersFromExcel = async () => {
             const [id, firstName, surname, dateOfBirth, gender, userName] =
               rowData;
 
-            // Convert dateOfBirth to a JavaScript Date object
-            const dateOfBirthAsDate = new Date(dateOfBirth * 1000);
-
             const user: UserSheetData = {
               firstName,
               surname,
-              dateOfBirth: dateOfBirthAsDate,
+              dateOfBirth: excelDateToJSDate(dateOfBirth),
               gender,
               userName,
             };
@@ -82,16 +89,14 @@ export const loadMessagesFromExcel = async () => {
             const [id, content, sender, receiver, seen, timestampSent] =
               rowData;
 
-            // Convert dateOfBirth to a JavaScript Date object
-            const timestampSentAsDate = new Date(timestampSent * 1000);
-
+            console.log(excelDateToJSDate(timestampSent).toLocaleString());
             const message: AddMessageInDBArgs = {
               id,
               content,
               sender,
               receiver,
               seen,
-              timestampSent: timestampSentAsDate,
+              timestampSent: excelDateToJSDate(timestampSent),
             };
 
             addMessageInDB(message);

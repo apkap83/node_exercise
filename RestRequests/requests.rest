@@ -2,14 +2,21 @@
 
 ###
 # Load Data from Excel
-POST {{hostname}}:4000/feedDB
+POST {{hostname}}:4000/api/feedDB
 
 ###
 # Get Users Based on Parameters
-GET {{hostname}}:4000/users?firstName=George
+GET {{hostname}}:4000/api/users?firstName=George&surname=SurnameA&userName=username1
 
 
 ###
 # Receives the user-ids of two users and retrieves all of the messages that they have exchanged,
 // ordered by the most recent sent.
-GET {{hostname}}:4000/messages?user1Id=10&user2Id=7
+GET {{hostname}}:4000/api/messages?user1Id=10&user2Id=7
+
+
+###
+# Receives a user-id and then retrieves a list of users, sorted by the most 
+# recent message that has been exchanged between the user requested and the 
+# rest of the users (just like your social-media applications).
+GET {{hostname}}:4000/api/user/10/messages
