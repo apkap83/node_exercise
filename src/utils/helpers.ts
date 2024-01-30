@@ -1,8 +1,11 @@
 import xlsx from "node-xlsx";
 import fs from "fs";
 import path from "path";
-
-import { User, Message } from "../services/dbService/initDBAndModels";
+import logger from "../../config/winston-config";
+import {
+  emptyUsersTable,
+  emptyMessagesTable,
+} from "../services/dbService/initDBAndModels";
 import { addUserInDB, AddUserInDBArgs } from "../services/userService/user";
 import {
   addMessageInDB,
@@ -28,14 +31,11 @@ function excelDateToJSDate(serial: number) {
 }
 
 export const loadUsersFromExcel = async () => {
-  console.log("Loading Users to DB...");
+  logger.info("Truncating Existing Users...");
+  emptyUsersTable();
+
+  logger.info("Loading Users to DB...");
   const usersSheetName = "users";
-
-  // Drop the "users" and "messages" tables if they exist
-  await User.drop();
-
-  // Recreate the "users" and "messages" tables
-  await User.sync();
 
   const fileBuffer = fs.readFileSync(path.join(__dirname, "../../seeds.xlsx"));
   const workSheetsFromFile = xlsx.parse(fileBuffer);
@@ -67,14 +67,11 @@ export const loadUsersFromExcel = async () => {
 };
 
 export const loadMessagesFromExcel = async () => {
-  console.log("Loading Messages to DB...");
+  logger.info("Truncating Existing Messages...");
+  emptyMessagesTable();
+
+  logger.info("Loading Messages to DB...");
   const messagesSheetName = "messages";
-
-  // Drop the "users" and "messages" tables if they exist
-  await Message.drop();
-
-  // Recreate the "users" and "messages" tables
-  await Message.sync();
 
   const fileBuffer = fs.readFileSync(path.join(__dirname, "../../seeds.xlsx"));
   const workSheetsFromFile = xlsx.parse(fileBuffer);
@@ -89,7 +86,6 @@ export const loadMessagesFromExcel = async () => {
             const [id, content, sender, receiver, seen, timestampSent] =
               rowData;
 
-            console.log(excelDateToJSDate(timestampSent).toLocaleString());
             const message: AddMessageInDBArgs = {
               id,
               content,

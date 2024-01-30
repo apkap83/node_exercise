@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 const config = require("config");
-import loggerDB from "../../../config/winston-config";
+import loggerDB from "../../../config/winston-config-for-sequelize";
 
 // Custom logging function
 function sequelizeLogging(msg: string) {

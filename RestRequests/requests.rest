@@ -5,9 +5,12 @@
 POST {{hostname}}:4000/api/feedDB
 
 ###
+# Get All Users
+GET {{hostname}}:4000/api/users
+
+###
 # Get Users Based on Parameters
 GET {{hostname}}:4000/api/users?firstName=George&surname=SurnameA&userName=username1
-
 
 ###
 # Receives the user-ids of two users and retrieves all of the messages that they have exchanged,

@@ -1,19 +1,27 @@
 import { sequelizeDB } from "./dbConnect";
 import { User } from "./models/User";
 import { Message } from "./models/Message";
+import logger from "../../../config/winston-config";
 
 async function assertDBConnectionOK() {
-  console.log("Checking Database Connection...");
+  logger.info("Checking Database Connection...");
 
   try {
     await sequelizeDB.authenticate();
     sequelizeDB.sync();
-    console.log("Database connection OK!");
+    logger.info("Database connection OK!");
   } catch (error) {
-    console.error("Unable to connect to database");
+    logger.error("Unable to connect to database");
     process.exit(1);
-    throw error;
   }
+}
+
+export async function emptyUsersTable() {
+  await User.truncate();
+}
+
+export async function emptyMessagesTable() {
+  await Message.truncate();
 }
 
 assertDBConnectionOK();

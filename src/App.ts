@@ -2,7 +2,7 @@
 import express, { Request, Response, NextFunction, Errback } from "express";
 import { myGraphQlRoute } from "./routes/myGraphQLRoutes";
 
-// Initialize Postgres Connection and Models
+// Initialize Sequelize DB Connection and Models
 import "./services/dbService/initDBAndModels";
 
 import morgan from "morgan";
