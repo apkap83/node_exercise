@@ -90,7 +90,6 @@ describe("Tests", () => {
 
     expect(response.statusCode).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
-    // Add more expectations here if necessary, like checking the content of response.body
   });
 
   it("should return a 400 status for an invalid user ID", async () => {
