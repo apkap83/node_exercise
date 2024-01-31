@@ -83,7 +83,7 @@ describe("Tests", () => {
   });
 
   it("should return messages for a valid user ID", async () => {
-    const validUserId = 1; // Replace with a valid user ID from your database
+    const validUserId = 1;
     const response = await request(app).get(
       `${prefixURL}/user/${validUserId}/messages`
     );
